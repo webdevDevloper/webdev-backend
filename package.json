@@ -1,0 +1,26 @@
+{
+  "name": "webdev-backend",
+  "version": "1.0.0",
+  "description": "Webdev Studio Entry Task - Backend",
+  "main": "server.js",
+  "lint-staged": {
+    "*.{js}": "prettier --config .prettierrc.json server.js \"src/**/*.js\" --write"
+  },
+  "scripts": {
+    "lint": "lint-staged",
+    "husky-prepare": "husky install",
+    "dev": "nodemon --inspect server.js"
+  },
+  "author": "Dynamic Energy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.2.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
+  }
+}
