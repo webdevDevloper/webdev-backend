@@ -19,11 +19,6 @@ npm install
 npm run dev
 ```
 
-Test:
-
-```sh
-npm run test
-```
 
 # Format code with Prettier
 

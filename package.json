@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "lint-staged",
     "husky-prepare": "husky install",
-    "dev": "nodemon --inspect server.js"
+    "dev": "nodemon --inspect server.js",
+    "start": "node server.js"
   },
   "author": "Dynamic Energy",
   "license": "ISC",
