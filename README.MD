@@ -3,8 +3,8 @@
 |            |                                                  Status                                                   |
 | :--------: | :-------------------------------------------------------------------------------------------------------: |
 |     CI     |                                                   ![]()                                                   |
-|  Staging   | ![](https://vsrm.dev.azure.com/fc5y/_apis/public/Release/badge/5733aefa-7440-4173-9990-437724df1c84/4/5)  |
-| Production | ![](https://vsrm.dev.azure.com/fc5y/_apis/public/Release/badge/5733aefa-7440-4173-9990-437724df1c84/4/26) |
+|  Staging   | ![](https://dev.azure.com/votruongtrunghieu/Webdev%20Entry%20Task/_apis/build/status/Webdev%20Entry%20Task-CI)  |
+| Production | ![](https://dev.azure.com/votruongtrunghieu/Webdev%20Entry%20Task/_apis/build/status/Webdev%20Entry%20Task-CI) |
 
 # Description
 
