@@ -2,12 +2,11 @@
 
 |            |                                                  Status                                                   |
 | :--------: | :-------------------------------------------------------------------------------------------------------: |
-|     CI     |                                                   ![]()                                                   |
 |  Staging   | ![Build status](https://dev.azure.com/votruongtrunghieu/Webdev%20Entry%20Task/_apis/build/status/Webdev%20Entry%20Task-CI) |
 | Production | ![]() |
 | CI/CD | Azure Devops |
 | Server | Amazon EC2 |
-| IPv4 | $34.225.250.142$ |
+| IPv4 | 34.225.250.142 |
 
 
 
