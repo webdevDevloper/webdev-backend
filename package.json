@@ -7,7 +7,7 @@
     "*.{js}": "prettier --config .prettierrc.json server.js \"src/**/*.js\" --write"
   },
   "scripts": {
-    "lint": "lint-staged",
+    "lint": "lint-staged --allow-empty",
     "husky-prepare": "husky install",
     "dev": "nodemon --inspect server.js",
     "start": "node server.js"
