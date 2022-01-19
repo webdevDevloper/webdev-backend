@@ -26,6 +26,12 @@ npm run dev
 
 # Format code with Prettier
 
+Run this command in the beginning:
+
+```sh
+npm run husky-prepare
+```
+
 Whenever you make a new commit, Prettier will format your code automatically.
 
 # Notice
