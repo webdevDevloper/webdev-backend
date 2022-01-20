@@ -10,7 +10,7 @@ app.listen('3000', () => {
 app.use(express.json())
 
 app.use('/', (req, res) => {
-    res.send('Final TEST CI/CD 2!')
+    res.send('Hello!')
 })
 
 app.use((req, res) => {
