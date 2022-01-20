@@ -24,10 +24,9 @@ const orderSchema = new mongoose.Schema({
             required: [true, 'Order must belong to a User!'],
         },
     },
-
     price: {
         type: Number,
-        require: [true, 'Booking must have a price.'],
+        require: [true, 'Order must have a price.'],
     },
     createdAt: {
         type: Date,
@@ -39,14 +38,6 @@ const orderSchema = new mongoose.Schema({
     },
 });
 
-orderSchema.pre(/^find/, function (next) {
-    this.populate('user').populate({
-        path: 'tour',
-        select: 'name',
-    });
-    next();
-});
-
-const Order = mongoose.model('Booking', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;
