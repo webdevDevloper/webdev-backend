@@ -17,4 +17,12 @@ app.use((req, res) => {
     res.status(404).send('404')
 })
 
-app.use((error, req, res, next) => {})
+app.use((error, req, res, next) => {
+    let {statusCode, msg} = error;
+
+    statusCode = statusCode ? statusCode : '500';
+    res.status(statusCode).json({
+        statusCode,
+        msg,
+    })
+})
