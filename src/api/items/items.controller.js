@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const itemsService = require('./items.service');
+const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
     getItemsByName: (req, res) => {
@@ -13,7 +14,7 @@ module.exports = {
     },
     uploadItem: async (req, res, next) => {
         try {
-            if (!req.file) next(new Error('err'));
+            if (!req.file) throw new AppError(500, 'File not found');
 
             ({ iname, description, price, amount } = req.body);
 
@@ -24,7 +25,7 @@ module.exports = {
 
             //let token = req.headers.authorization.split(' ')[1];
         } catch (err) {
-            // err
+            next(err);
         }
     },
 };
