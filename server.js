@@ -11,8 +11,6 @@ app.listen('3000', () => {
 
 app.use(express.json())
 
-const api = require('./src/api')
-
 app.use('/api/v1', api)
 
 app.use((req, res) => {
