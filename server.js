@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+const api = require('./src/api')
+
 const path = require('path')
 
 app.listen('3000', () => {
