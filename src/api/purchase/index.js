@@ -1,8 +1,8 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
-const purchaseController = require('./purchase.controller')
+const purchaseController = require('./purchase.controller');
 
-router.post('/', purchaseController.addItem)
-router.get('/', purchaseController.getItems)
+router.post('/', purchaseController.addItem);
+router.get('/', purchaseController.getItems);
 
-module.exports = router
+module.exports = router;
