@@ -1,5 +1,4 @@
 const authService = require('./auth.service');
-const AppError = require('./../utils/appError');
 
 module.exports = {
     signup: async (req, res, next) => {
