@@ -1,14 +1,14 @@
-const User = require('../../models/userModel');
+const Order = require('../../models/orderModel');
 
-const Product = require('../../models/productModel');
 const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
-    addItem: async (body, userId) => {
+    addItem: async ({ product }, userId) => {
         try {
-            let { productId, quantity } = body;
-            let user = await User.findById(userId);
-            user[0].updatePaid(productId, quantity);
+            const newOrder = await Order.create({
+                items: product,
+                userId: userId,
+            });
             return {
                 error: true,
                 msg: 'Item added successfully',
@@ -19,9 +19,9 @@ module.exports = {
     },
     getItems: async (userId) => {
         try {
-            let user = await User.findById(userId);
+            let order = await Order.find(userId);
             return {
-                itemsPurchase: user[0].paid.items,
+                order,
             };
         } catch (error) {
             throw new AppError(500, error.message);
