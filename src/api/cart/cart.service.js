@@ -1,4 +1,4 @@
-const db = require('../../models/db.json')
+const User = require('../../models/userModel')
 
 const { AppError } = require('../../common/errors/AppError')
 
@@ -6,29 +6,26 @@ module.exports = {
     getItems: async () => {
         try {
             // const userId = await;
-            let user = db.users.filter((user) => user.id === userId)
-
-            if (user.length == 1) {
-                return {
-                    cart: user[0].itemsInCart,
-                }
+            let user = await User.findOne({ id: userId })
+            return {
+                cart: user[0].cart,
             }
-            throw new AppError(401, 'Invalid user')
         } catch (error) {
             throw new AppError(500, error.message)
         }
     },
     updateItem: async (body) => {
         try {
-            let { itemId, newAmount } = body
+            let { productId, newQuantity } = body
             // const userId = await;
-            let user = db.users.filter((user) => user.id === userId)
-
-            if (user.length == 1) {
-                const item = user[0].itemsInCart.filter((item) => item.id === itemId)
-                item.amount = newAmount
+            let user = await User.findOne({ id: userId })
+            let product = user[0].cart.items.findOne({ productId })
+            product[0].quantity = newQuantity
+            await User.save()
+            return {
+                error: false,
+                msg: 'Update successfully',
             }
-            throw new AppError(401, 'Invalid user')
         } catch (error) {
             throw new AppError(500, error.message)
         }
@@ -37,17 +34,13 @@ module.exports = {
         try {
             let { itemId, newAmount } = body
             // const userId = await;
-            let user = db.users.filter((user) => user.id === userId)
-
-            if (user.length == 1) {
-                user[0].itemsInCart.push(body)
-
-                return {
-                    error: false,
-                    msg: 'Add successfully',
-                }
+            let user = await User.findOne({ id: userId })
+            user[0].cart.items.push(body)
+            await User.save()
+            return {
+                error: false,
+                msg: 'Add successfully',
             }
-            throw new AppError(401, 'Invalid user')
         } catch (error) {
             throw new AppError(500, error.message)
         }

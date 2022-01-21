@@ -1,19 +1,19 @@
-const db = require('../../models/db.json')
+const User = require('../../models/userModel')
 
 const { AppError } = require('../../common/errors/AppError')
+
 module.exports = {
-    addItem: async ({ itemId, amount }) => {
+    addItem: async (body) => {
         try {
+            let { productId, quantity } = body
             // const userId = await;
-            // const user = db.users.filter((user) => user.Id === userId);
-            if (user.length === 1) {
-                user[0].itemPurchase.push({ itemId, amount })
-                return {
-                    error: true,
-                    msg: 'Item added successfully',
-                }
+            let user = await User.findOne({ id: userId })
+            user[0].paid.items.push(body)
+            await User.save()
+            return {
+                error: true,
+                msg: 'Item added successfully',
             }
-            throw new AppError(401, 'Invalid user')
         } catch (error) {
             throw new AppError(500, error.message)
         }
@@ -21,13 +21,10 @@ module.exports = {
     getItems: async () => {
         try {
             // const userId = await;
-            // const user = db.users.filter((user) => user.Id === userId);
-            if (user.length === 1) {
-                return {
-                    itemsPurchase: user[0].itemsPurchase,
-                }
+            let user = await User.findOne({ id: userId })
+            return {
+                itemsPurchase: user[0].paid,
             }
-            throw new AppError(401, 'Invalid user')
         } catch (error) {
             throw new AppError(500, error.message)
         }
