@@ -1,32 +1,30 @@
-const User = require('../../models/userModel')
+const User = require('../../models/userModel');
 
-const { AppError } = require('../../common/errors/AppError')
+const Product = require('../../models/productModel');
+const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
-    addItem: async (body) => {
+    addItem: async (body, userId) => {
         try {
-            let { productId, quantity } = body
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
-            user[0].paid.items.push(body)
-            await User.save()
+            let { productId, quantity } = body;
+            let user = await User.findById(userId);
+            user[0].updatePaid(productId, quantity);
             return {
                 error: true,
                 msg: 'Item added successfully',
-            }
+            };
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-    getItems: async () => {
+    getItems: async (userId) => {
         try {
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
+            let user = await User.findById(userId);
             return {
-                itemsPurchase: user[0].paid,
-            }
+                itemsPurchase: user[0].paid.items,
+            };
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-}
+};

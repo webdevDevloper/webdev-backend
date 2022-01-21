@@ -1,63 +1,57 @@
-const User = require('../../models/userModel')
+const User = require('../../models/userModel');
 
-const Product = require('../../models/productModel')
+const Product = require('../../models/productModel');
 
-const { AppError } = require('../../common/errors/AppError')
+const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
-    getItems: async () => {
+    getItems: async (userId) => {
         try {
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
+            let user = await User.findById(userId);
             return {
-                cart: user[0].cart,
-            }
+                cart: user[0].cart.items,
+            };
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-    updateItem: async (body) => {
+    updateItem: async (body, userId) => {
         try {
-            let { productId, newQuantity } = body
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
-            let product = user[0].cart.items.findOne({ productId })
-            product[0].quantity = newQuantity
-            await User.save()
+            let { productId, newQuantity } = body;
+            let user = await User.findById(userId);
+            if (newQuantity) {
+                user.updateCart(productId, newQuantity);
+            } else {
+                user.removeFromCart(productId);
+            }
             return {
                 error: false,
                 msg: 'Update successfully',
-            }
+            };
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-    addItem: async (body) => {
+    addItem: async (body, userId) => {
         try {
-            let { itemId, newAmount } = body
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
-            user[0].cart.items.push(body)
-            await User.save()
+            let { itemId, newAmount } = body;
+            let user = await User.findById(userId);
+            user.updateCart(productId, newQuantity);
             return {
                 error: false,
                 msg: 'Add successfully',
-            }
+            };
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-    getTotal: async () => {
+    getTotal: async (userId) => {
         try {
-            // const userId = await;
-            let user = await User.findOne({ id: userId })
-            let total = await user[0].cart.items.reduce((total, item) => {
-                const product = await Product.findOne({ id: item.productId })
-                return total + product.price
-            })
-            return total
+            let user = await User.findById(userId);
+            let total = user.totalInCart();
+            return total;
         } catch (error) {
-            throw new AppError(500, error.message)
+            throw new AppError(500, error.message);
         }
     },
-}
+};
