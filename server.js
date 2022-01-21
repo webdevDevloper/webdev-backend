@@ -16,5 +16,3 @@ app.use('/', (req, res) => {
 app.use((req, res) => {
     res.status(404).send('404');
 });
-
-app.use((error, req, res, next) => {});
