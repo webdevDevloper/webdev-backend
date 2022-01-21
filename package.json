@@ -9,13 +9,14 @@
   "scripts": {
     "lint": "lint-staged --allow-empty",
     "husky-prepare": "husky install",
-    "dev": "nodemon --inspect server.js",
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "author": "Dynamic Energy",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
