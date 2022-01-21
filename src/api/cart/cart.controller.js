@@ -31,7 +31,7 @@ module.exports = {
     },
     getTotal: async (req, res, next) => {
         try {
-            let DTO = await cartService.getTotal(req.body)
+            let DTO = await cartService.getTotal()
 
             res.status(200).json(DTO)
         } catch (error) {

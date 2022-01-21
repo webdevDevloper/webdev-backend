@@ -1,5 +1,7 @@
 const User = require('../../models/userModel')
 
+const Product = require('../../models/productModel')
+
 const { AppError } = require('../../common/errors/AppError')
 
 module.exports = {
@@ -41,6 +43,19 @@ module.exports = {
                 error: false,
                 msg: 'Add successfully',
             }
+        } catch (error) {
+            throw new AppError(500, error.message)
+        }
+    },
+    getTotal: async () => {
+        try {
+            // const userId = await;
+            let user = await User.findOne({ id: userId })
+            let total = await user[0].cart.items.reduce((total, item) => {
+                const product = await Product.findOne({ id: item.productId })
+                return total + product.price
+            })
+            return total
         } catch (error) {
             throw new AppError(500, error.message)
         }

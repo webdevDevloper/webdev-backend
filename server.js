@@ -18,11 +18,12 @@ app.use((req, res) => {
 })
 
 app.use((error, req, res, next) => {
-    let { statusCode, msg } = error
+    let { statusCode, message } = error
 
-    statusCode = statusCode ? statusCode : '500'
+    statusCode = statusCode ? statusCode : 500
+
     res.status(statusCode).json({
         statusCode,
-        msg,
+        message,
     })
 })
