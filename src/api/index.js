@@ -2,8 +2,12 @@ const router = require('express').Router()
 
 const purchase = require('./purchase')
 const cart = require('./cart')
+const items = require('./items')
+const auth = require('./auth')
 
-router.get('/purchase', purchase)
-router.get('/cart', cart)
+router.use('/items', items)
+router.use('/auth', auth)
+router.use('/purchase', purchase)
+router.use('/cart', cart)
 
 module.exports = router
