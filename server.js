@@ -7,7 +7,6 @@ dotenv.config({ path: './config.env' });
 
 const app = express();
 const api = require('./src/api');
-
 const cloudinary = require('cloudinary');
 const cors = require('cors');
 
