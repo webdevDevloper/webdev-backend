@@ -1,10 +1,11 @@
 const Order = require('../../models/orderModel');
 
+const User = require('../../models/userModel');
+
 const { AppError } = require('../../common/errors/AppError');
 
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/userModel');
 
 module.exports = {
     addItem: async ({ product }, userId) => {
@@ -13,6 +14,7 @@ module.exports = {
                 items: product,
                 userId: userId,
             });
+            for (let i = 0; i < product.length; i++) User.removeFromCart(product[i].productId);
             return {
                 error: false,
                 msg: 'Item added successfully',
@@ -20,7 +22,7 @@ module.exports = {
         } catch (error) {
             throw new AppError(500, error.message);
         }
-    },
+    }, // removeFromCart
     getItems: async (userId) => {
         try {
             let order = await Order.find(userId);

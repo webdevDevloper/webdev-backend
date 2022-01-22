@@ -10,7 +10,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 mongoose
-    .connect('mongodb+srv://wds_test:QWmHDJsufge47pYT@cluster0.zvjyj.mongodb.net/test')
+    .connect('mongodb+srv://wds_test:QWmHDJsufge47pYT@cluster0.zvjyj.mongodb.net/webdev')
     .then(() => console.log('DB connection successfully'));
 
 const cloudinary = require('cloudinary');
@@ -21,8 +21,6 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
-
-mongoose.connect(process.env.MONGODB_CONNECT_STRING);
 
 app.use(cors());
 

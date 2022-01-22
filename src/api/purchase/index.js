@@ -1,9 +1,9 @@
 const router = require('express').Router();
-// const protect = require('../../common/protect/protect').protect();
+const { validate } = require('../../middleware/validate/validate');
 const purchaseController = require('./purchase.controller');
 
-router.post('/', purchaseController.protect, purchaseController.addItem);
-router.get('/', purchaseController.protect, purchaseController.getItems);
-router.get('/get-total', purchaseController.protect, purchaseController.getTotal);
+router.route('/').post(validate, purchaseController.addItem);
+router.route('/').get(validate, purchaseController.getItems);
+router.route('/get-total').get(validate, purchaseController.getTotal);
 
 module.exports = router;

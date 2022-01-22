@@ -32,7 +32,7 @@ module.exports = {
     },
     addItem: async (body, userId) => {
         try {
-            let { itemId, newAmount } = body;
+            let { productId, newQuantity } = body;
             let user = await User.findById(userId);
             user.updateCart(productId, newQuantity);
             return {
