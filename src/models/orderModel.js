@@ -9,7 +9,11 @@ const orderSchema = new Schema({
     },
     items: [
         {
-            product: { type: Object, required: true },
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true,
+            },
             quantity: { type: Number, required: true },
         },
     ],
@@ -20,4 +24,8 @@ const orderSchema = new Schema({
     },
 });
 
+orderSchema.method.totalOfOrder = function () {
+    const total = this.items.reduce((total, item) => total + item.productId.populate('price'));
+    return total;
+};
 module.exports = mongoose.model('Order', orderSchema);

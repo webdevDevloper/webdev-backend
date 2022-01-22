@@ -1,47 +1,10 @@
-const Order = require('../../models/orderModel');
-
-const { AppError } = require('../../common/errors/AppError');
-
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/userModel');
+const AppError = require('../errors/AppError');
 
 module.exports = {
-    addItem: async ({ product }, userId) => {
-        try {
-            await Order.create({
-                items: product,
-                userId: userId,
-            });
-            return {
-                error: false,
-                msg: 'Item added successfully',
-            };
-        } catch (error) {
-            throw new AppError(500, error.message);
-        }
-    },
-    getItems: async (userId) => {
-        try {
-            let order = await Order.find(userId);
-            return {
-                order,
-            };
-        } catch (error) {
-            throw new AppError(500, error.message);
-        }
-    },
-    getTotal: async (userId) => {
-        try {
-            let order = await Order.find(userId);
-            let total = order.reduce((total, order) => total + order.totalOfOrder());
-
-            return total;
-        } catch (error) {
-            throw new AppError(500, error.message);
-        }
-    },
-    protect: async (req) => {
+    protect: async (req, res, next) => {
         try {
             // 1) Getting token and check of it's there
             let token;
@@ -71,8 +34,9 @@ module.exports = {
 
             // GRANT ACCESS TO PROTECTED ROUTE
             req.user = currentUser;
+            next();
         } catch (error) {
-            throw new AppError(500, error.message);
+            return next(error);
         }
     },
 };

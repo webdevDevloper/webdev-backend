@@ -1,7 +1,5 @@
 const User = require('../../models/userModel');
 
-const Product = require('../../models/productModel');
-
 const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {

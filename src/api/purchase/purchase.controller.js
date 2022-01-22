@@ -19,4 +19,23 @@ module.exports = {
             next(error);
         }
     },
+    getTotal: async (req, res, next) => {
+        try {
+            console.log(req.user);
+            const DTO = await purchaseService.getTotal(req.user.id);
+
+            res.status(200).json(DTO);
+        } catch (error) {
+            next(error);
+        }
+    },
+    protect: async (req, res, next) => {
+        try {
+            await purchaseService.protect(req);
+            next();
+        } catch (error) {
+            // console.error(error);
+            next(error);
+        }
+    },
 };
