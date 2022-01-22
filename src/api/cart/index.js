@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const protect = require('../../common/protect/protect').protect();
+// const protect = require('../../common/protect/protect').protect();
 const cartController = require('./cart.controller');
 
 router.get('/', cartController.getItems);
