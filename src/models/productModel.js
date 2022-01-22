@@ -31,19 +31,15 @@ const productSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    countInStocks: {
+        type: Number,
+        required: true,
+    },
     userID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-});
-
-productSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-});
-
-productSchema.set('toJSON', {
-    virtuals: true,
 });
 
 exports.Product = mongoose.model('Product', productSchema);

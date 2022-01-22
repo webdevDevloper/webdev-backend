@@ -55,19 +55,17 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.methods.addToCart = function (product) {
-    const cartProductIndex = this.cart.items.findIndex((cp) => {
-        return cp.productId.toString() === product._id.toString();
+userSchema.methods.updateCart = function (productId, newQuantity) {
+    const itemIndex = this.cart.items.findIndex((item) => {
+        return item.productId.toString() === productId.toString();
     });
-    let newQuantity = 1;
     const updatedCartItems = [...this.cart.items];
 
-    if (cartProductIndex >= 0) {
-        newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-        updatedCartItems[cartProductIndex].quantity = newQuantity;
+    if (itemIndex >= 0) {
+        updatedCartItems[itemIndex].quantity = newQuantity;
     } else {
         updatedCartItems.push({
-            productId: product._id,
+            productId: productId,
             quantity: newQuantity,
         });
     }
@@ -86,9 +84,9 @@ userSchema.methods.removeFromCart = function (productId) {
     return this.save();
 };
 
-userSchema.methods.clearCart = function () {
-    this.cart = { items: [] };
-    return this.save();
+userSchema.methods.totalInCart = function () {
+    const total = this.cart.items.reduce((total, item) => total + this.populate('cart.item.productId.price'));
+    return total;
 };
 
 userSchema.pre('save', async function (next) {
@@ -110,14 +108,12 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-userSchema.pre(/^find/, function (next) {
-    // this points to the current query
-    this.find({ active: { $ne: false } });
-    next();
-});
-
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.duplicateEmail = async function (candidateEmail, userEmail) {
+    return candidateEmail === userEmail;
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
