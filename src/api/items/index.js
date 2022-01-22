@@ -1,5 +1,5 @@
 const itemsController = require('./items.controller');
-const validate = require('../../middleware/validate');
+const { validate } = require('../../middleware/validate');
 const router = require('express').Router();
 const multer = require('multer');
 
@@ -22,6 +22,6 @@ router.get('/', (req, res) => {
 
 router.get('/:id', itemsController.getItemDetail);
 
-router.post('/', validate.validate, upload.single('thumbnail'), itemsController.uploadItem);
+router.route('/').post(validate, upload.single('thumbnail'), itemsController.uploadItem);
 
 module.exports = router;

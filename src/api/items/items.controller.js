@@ -5,21 +5,21 @@ const { AppError } = require('../../common/errors/AppError');
 module.exports = {
     getItemsByName: async (req, res, next) => {
         try {
-            res.send(await itemsService.getItemsByName(req.query.name));
+            res.send(await itemsService.getItemsByName(req.query.name, next));
         } catch (err) {
             next(err);
         }
     },
     getAllItems: async (req, res, next) => {
         try {
-            res.send(await itemsService.getAllItems(res));
+            res.send(await itemsService.getAllItems(res, next));
         } catch (err) {
             next(err);
         }
     },
     getItemDetail: async (req, res, next) => {
         try {
-            res.send(await itemsService.getItemDetail(req.params.id));
+            res.send(await itemsService.getItemDetail(req.params.id, next));
         } catch (err) {
             next(err);
         }
@@ -33,7 +33,7 @@ module.exports = {
             ({ title, description, price, amount } = req.body);
 
             // Upload thumbnail to Cloudinary
-            let imageUrl = await itemsService.uploadThumbnail(req.file.path, req.file.filename);
+            let imageUrl = await itemsService.uploadThumbnail(req.file.path, req.file.filename, next);
 
             // Save data to mongodb
             const response = await itemsService.uploadItem(
@@ -43,6 +43,7 @@ module.exports = {
                 price,
                 amount,
                 imageUrl,
+                next,
             );
 
             res.send(response);

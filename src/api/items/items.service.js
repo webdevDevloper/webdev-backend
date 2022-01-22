@@ -4,7 +4,7 @@ const Product = require('../../models/productModel').Product;
 const successRes = require('../../common/utils/Response').successRes;
 
 module.exports = {
-    uploadThumbnail: async (path, name) => {
+    uploadThumbnail: async (path, name, next) => {
         let ret = 'error';
 
         await cloudinary.v2.uploader.upload(path, { public_id: name }, (error, result) => {
@@ -14,7 +14,7 @@ module.exports = {
 
         return ret;
     },
-    uploadItem: async (userID, title, description, price, amount, imageUrl) => {
+    uploadItem: async (userID, title, description, price, amount, imageUrl, next) => {
         const product = new Product({
             userID,
             title,
@@ -44,7 +44,7 @@ module.exports = {
 
         return successRes;
     },
-    getItemsByName: async (name) => {
+    getItemsByName: async (name, next) => {
         await Product.find({
             title: {
                 $regex: name,
@@ -56,7 +56,7 @@ module.exports = {
             });
         return successRes;
     },
-    getItemDetail: async (id) => {
+    getItemDetail: async (id, next) => {
         await Product.find({
             _id: id,
         })
