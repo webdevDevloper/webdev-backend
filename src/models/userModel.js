@@ -26,17 +26,6 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
         select: false,
     },
-    passwordConfirm: {
-        type: String,
-        required: [true, 'Please confirm your password'],
-        validate: {
-            // This only works on CREATE and SAVE!!!
-            validator: function (el) {
-                return el === this.password;
-            },
-            message: 'Passwords are not the same!',
-        },
-    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -66,19 +55,17 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.methods.addToCart = function (product) {
-    const cartProductIndex = this.cart.items.findIndex((cp) => {
-        return cp.productId.toString() === product._id.toString();
+userSchema.methods.updateCart = function (productId, newQuantity) {
+    const itemIndex = this.cart.items.findIndex((item) => {
+        return item.productId.toString() === productId.toString();
     });
-    let newQuantity = 1;
     const updatedCartItems = [...this.cart.items];
 
-    if (cartProductIndex >= 0) {
-        newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-        updatedCartItems[cartProductIndex].quantity = newQuantity;
+    if (itemIndex >= 0) {
+        updatedCartItems[itemIndex].quantity = newQuantity;
     } else {
         updatedCartItems.push({
-            productId: product._id,
+            productId: productId,
             quantity: newQuantity,
         });
     }
@@ -97,9 +84,9 @@ userSchema.methods.removeFromCart = function (productId) {
     return this.save();
 };
 
-userSchema.methods.clearCart = function () {
-    this.cart = { items: [] };
-    return this.save();
+userSchema.methods.totalInCart = function () {
+    const total = this.cart.items.reduce((total, item) => total + this.populate('cart.item.productId.price'));
+    return total;
 };
 
 userSchema.pre('save', async function (next) {

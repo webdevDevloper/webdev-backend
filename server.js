@@ -1,9 +1,14 @@
+const mongoose = require('mongoose');
 const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({ path: './config.env' });
+
 const app = express();
 const api = require('./src/api');
 const path = require('path');
 const cloudinary = require('cloudinary');
-const mongoose = require('mongoose');
 const cors = require('cors');
 
 cloudinary.config({
@@ -12,13 +17,9 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
-mongoose.connect(process.env.MONGODB_CONNECT_STRING);
-
+app.use(express.json());
 app.use(cors());
-
-app.listen('3000', () => {
-    console.log('Running');
-});
+app.use(express.urlencoded({ extended: true }));
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
@@ -33,9 +34,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`App running on port ${port}...`);
 });
-
-// ROUTING
-app.use(express.json());
 
 app.use('/api/v1', api);
 

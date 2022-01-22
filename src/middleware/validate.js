@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const AppError = require('./appError');
+const AppError = require('../common/errors/AppError');
 const { promisify } = require('util');
-const User = require('./../models/userModel');
+const User = require('../models/userModel');
 
-exports.protectRoute = async (req, res, next) => {
+exports.validate = async (req, res, next) => {
     // 1) Getting token and check of it's there
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -13,7 +13,7 @@ exports.protectRoute = async (req, res, next) => {
     }
 
     if (!token) {
-        throw new AppError(401, 'You are not logged in! Please log in to get access.');
+        res.status(401, 'You are not logged in! Please log in to get access.');
     }
 
     // 2) Verification token

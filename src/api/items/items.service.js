@@ -3,24 +3,20 @@ const { AppError } = require('../../common/errors/AppError');
 const cloudinary = require('cloudinary');
 const Product = require('../../models/productModel').Product;
 const { mongoose } = require('mongoose');
+const successRes = require('../../common/utils/Response').successRes;
 
 module.exports = {
     uploadThumbnail: async (path, name) => {
         let ret = 'error';
 
         await cloudinary.v2.uploader.upload(path, { public_id: name }, (error, result) => {
-            if (error) throw new AppError(500, 'Upload failed');
+            if (error) next(new AppError(500, 'Upload failed'));
             else ret = result.secure_url;
         });
 
         return ret;
     },
     uploadItem: async (userID, title, description, price, amount, imageUrl) => {
-        const successRes = {
-            statusCode: 200,
-            message: 'ok',
-        };
-
         const product = new Product({
             userID,
             title,
@@ -34,54 +30,45 @@ module.exports = {
             .save()
             .then()
             .catch((err) => {
-                throw new AppError(500, "Can't upload item");
+                next(new AppError(500, "Can't upload item"));
             });
+
+        delete successRes.data;
 
         return successRes;
     },
     getAllItems: async () => {
-        let response = {};
-
         await Product.find({})
-            .then((res) => (response = res))
+            .then((res) => (successRes.data = res))
             .catch((err) => {
-                if (err) {
-                    throw new AppError(500, "Can't get items");
-                }
+                next(new AppError(500, "Can't get items"));
             });
 
-        return response;
+        return successRes;
     },
     getItemsByName: async (name) => {
-        let response = {};
-
         await Product.find({
             title: {
                 $regex: name,
             },
         })
-            .then((res) => (response = res))
+            .then((res) => (successRes.data = res))
             .catch((err) => {
-                if (err) {
-                    throw new AppError(500, "Can't get items");
-                }
+                next(new AppError(500, "Can't get items"));
             });
-
-        return response;
+        return successRes;
     },
     getItemDetail: async (id) => {
-        let response = {};
-
         await Product.find({
             _id: id,
         })
-            .then((res) => (response = res))
+            .then((res) => {
+                successRes.data = res;
+                // 404
+            })
             .catch((err) => {
-                if (err) {
-                    throw new AppError(500, "Can't get item detail");
-                }
+                next(new AppError(500, "Can't get item detail"));
             });
-
-        return response;
+        return successRes;
     },
 };
