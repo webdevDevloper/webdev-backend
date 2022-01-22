@@ -5,11 +5,11 @@ const User = require('./../models/userModel');
 const AppError = require('./../common/appError');
 const sendEmail = require('./../common/email');
 
-// const signToken = (id) => {
-//     return jwt.sign({ id }, process.env.JWT_SECRET, {
-//         expiresIn: process.env.JWT_EXPIRES_IN,
-//     });
-// };
+const signToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+};
 
 // const createSendToken = (user, req, res) => {
 //     const token = signToken(user._id);
@@ -40,6 +40,7 @@ exports.signup = async (body) => {
         return {
             status: 'success',
             message: 'Your account has been created',
+            data: newUser,
         };
     } catch (err) {
         throw new AppError(500, error.message);
@@ -60,13 +61,17 @@ exports.login = async (body) => {
             throw new AppError(401, 'Incorrect email or password');
         }
 
+        // 3) If everything ok, send token to client
+        // createSendToken(user, req, res);
+
+        const token = signToken(user._id);
+        user.password = undefined;
         return {
             status: 'success',
             message: 'Your account has logged in',
+            data: { user },
+            token,
         };
-
-        // 3) If everything ok, send token to client
-        // createSendToken(user, req, res);
     } catch (err) {
         throw new AppError(500, error.message);
     }
