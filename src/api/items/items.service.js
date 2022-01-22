@@ -1,8 +1,6 @@
-const dotenv = require('dotenv').config();
 const { AppError } = require('../../common/errors/AppError');
 const cloudinary = require('cloudinary');
 const Product = require('../../models/productModel').Product;
-const { mongoose } = require('mongoose');
 const successRes = require('../../common/utils/Response').successRes;
 
 module.exports = {
