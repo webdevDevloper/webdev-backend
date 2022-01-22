@@ -1,4 +1,4 @@
-const AppError = require('../common/appError');
+const { AppError } = require('../common/errors/AppError');
 
 exports.userPermission = (...roles) => {
     return (req, res, next) => {

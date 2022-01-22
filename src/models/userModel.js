@@ -84,8 +84,13 @@ userSchema.methods.removeFromCart = function (productId) {
     return this.save();
 };
 
-userSchema.methods.totalInCart = function () {
-    const total = this.cart.items.reduce((total, item) => total + this.populate('cart.item.productId.price'));
+userSchema.methods.totalInCart = async function () {
+    const user = await this.populate('cart.items.productId', 'price');
+    const items = user.cart.items;
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+        total += items[i].productId.price;
+    }
     return total;
 };
 
