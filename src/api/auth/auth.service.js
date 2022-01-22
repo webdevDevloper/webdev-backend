@@ -41,7 +41,7 @@ exports.signup = async (body) => {
             status: 'success',
             message: 'Your account has been created',
         };
-    } catch (err) {
+    } catch (error) {
         throw new AppError(500, error.message);
     }
 };
@@ -67,7 +67,7 @@ exports.login = async (body) => {
 
         // 3) If everything ok, send token to client
         // createSendToken(user, req, res);
-    } catch (err) {
+    } catch (error) {
         throw new AppError(500, error.message);
     }
 };
@@ -102,7 +102,7 @@ exports.protect = async (req) => {
 
         // GRANT ACCESS TO PROTECTED ROUTE
         req.user = currentUser;
-    } catch (err) {
+    } catch (error) {
         throw new AppError(500, error.message);
     }
 };
@@ -141,7 +141,7 @@ exports.forgotPassword = async (req) => {
             status: 'success',
             message: 'Token sent to email!',
         };
-    } catch (err) {
+    } catch (error) {
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
         await user.save({ validateBeforeSave: false });
@@ -197,7 +197,7 @@ exports.updatePassword = async (userID, body) => {
 
         // 4) Log user in, send JWT
         // createSendToken(user, req, res);
-    } catch (err) {
+    } catch (error) {
         throw new AppError(500, error.message);
     }
 };

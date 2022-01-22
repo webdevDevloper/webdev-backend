@@ -6,7 +6,7 @@ module.exports = {
             let DTO = await authService.signup(req.body);
             res.status(201).json(DTO);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
     login: async (req, res, next) => {
@@ -14,7 +14,7 @@ module.exports = {
             let DTO = await authService.login(req.body);
             res.status(200).json(DTO);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
     protect: async (req, res, next) => {
@@ -22,7 +22,7 @@ module.exports = {
             await authService.protect(req);
             next();
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
     restrictTo: (...roles) => {
@@ -31,7 +31,7 @@ module.exports = {
                 authService.restrictTo(req.user.role, roles);
                 next();
             } catch (error) {
-                return next(error);
+                next(error);
             }
         };
     },
@@ -40,7 +40,7 @@ module.exports = {
             let DTO = await authService.forgotPassword(req);
             res.status(200).json(DTO);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
     resetPassword: async (req, res, next) => {
@@ -48,7 +48,7 @@ module.exports = {
             let DTO = await authService.resetPassword(req.body, req.params.token);
             res.status(200).json(DTO);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
     updatePassword: async (req, res, next) => {
@@ -56,7 +56,7 @@ module.exports = {
             let DTO = await authService.updatePassword(req.user.id, req.body);
             res.status(200).json(DTO);
         } catch (error) {
-            return next(error);
+            next(error);
         }
     },
 };
