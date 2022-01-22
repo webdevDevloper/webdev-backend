@@ -1,14 +1,14 @@
 class AppError extends Error {
     constructor(statusCode, message) {
-        super()
+        super();
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, AppError)
+            Error.captureStackTrace(this, AppError);
         }
 
-        this.message = message
-        this.statusCode = statusCode
+        this.message = message;
+        this.statusCode = statusCode;
     }
 }
 
-module.exports = AppError
+module.exports = AppError;
