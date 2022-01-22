@@ -24,8 +24,14 @@ const orderSchema = new Schema({
     },
 });
 
-orderSchema.method.totalOfOrder = function () {
-    const total = this.items.reduce((total, item) => total + item.productId.populate('price'));
+orderSchema.method.totalOfOrder = async function () {
+    const order = await this.populate('items.product', 'price');
+    const items = order.items;
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+        total += items[i].productId.price;
+    }
+    console.log(total);
     return total;
 };
 module.exports = mongoose.model('Order', orderSchema);

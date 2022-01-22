@@ -1,5 +1,7 @@
 const User = require('../../models/userModel');
 
+const Product = require('../../models/productModel').Product;
+
 const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
@@ -46,7 +48,7 @@ module.exports = {
     getTotal: async (userId) => {
         try {
             let user = await User.findById(userId);
-            let total = user.totalInCart();
+            let total = await user.totalInCart();
             return total;
         } catch (error) {
             throw new AppError(500, error.message);
