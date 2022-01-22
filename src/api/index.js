@@ -1,9 +1,13 @@
 const router = require('express').Router();
 
-//const auth = require('./auth')
-const items = require('./items');
+const purchase = require('./purchase');
+// const items = require('./items');
+const cart = require('./cart');
+const auth = require('./auth');
 
-//router.use('/auth', auth)
-router.use('/items', items);
+router.use('/purchase', purchase);
+// router.use('/items', items);
+router.use('/auth', auth);
+router.use('/cart', cart);
 
 module.exports = router;
