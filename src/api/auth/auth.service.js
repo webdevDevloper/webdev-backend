@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const User = require('./../models/userModel');
-const AppError = require('./../common/appError');
-const sendEmail = require('./../common/email');
+const User = require('./../../models/userModel');
+const AppError = require('./../../common/appError');
+const sendEmail = require('./../../common/email');
 
 const signToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -30,7 +30,11 @@ const signToken = (id) => {
 
 exports.signup = async (body) => {
     try {
-        const newUser = await User.create({
+        const user = await User.findOne({ email: body.email });
+        if (user) {
+            throw new AppError(409, 'Email already exists! Please try another.');
+        }
+        await User.create({
             name: body.name,
             email: body.email,
             password: body.password,
@@ -38,12 +42,12 @@ exports.signup = async (body) => {
         });
         // createSendToken(newUser, req, res);
         return {
-            status: 'success',
+            statusCode: 200,
             message: 'Your account has been created',
-            data: newUser,
         };
-    } catch (err) {
-        throw new AppError(500, error.message);
+    } catch (error) {
+        errorStatusCode = error.statusCode ? error.statusCode : 500;
+        throw new AppError(errorStatusCode, error.message);
     }
 };
 
@@ -67,55 +71,14 @@ exports.login = async (body) => {
         const token = signToken(user._id);
         user.password = undefined;
         return {
-            status: 'success',
+            statusCode: 200,
             message: 'Your account has logged in',
-            data: { user },
             token,
+            data: user,
         };
-    } catch (err) {
-        throw new AppError(500, error.message);
-    }
-};
-
-exports.protect = async (req) => {
-    try {
-        // 1) Getting token and check of it's there
-        let token;
-        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-            token = req.headers.authorization.split(' ')[1];
-        } else if (req.cookies.jwt) {
-            token = req.cookies.jwt;
-        }
-
-        if (!token) {
-            throw new AppError(401, 'You are not logged in! Please log in to get access.');
-        }
-
-        // 2) Verification token
-        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
-        // 3) Check if user still exists
-        const currentUser = await User.findById(decoded.id);
-        if (!currentUser) {
-            throw new AppError(401, 'The user belonging to this token does no longer exist.');
-        }
-
-        // 4) Check if user changed password after the token was issued
-        if (currentUser.changedPasswordAfter(decoded.iat)) {
-            throw new AppError(401, 'User recently changed password! Please log in again.');
-        }
-
-        // GRANT ACCESS TO PROTECTED ROUTE
-        req.user = currentUser;
-    } catch (err) {
-        throw new AppError(500, error.message);
-    }
-};
-
-exports.restrictTo = (userRole, roles) => {
-    // roles ['admin',...] not 'user'
-    if (!roles.includes(userRole)) {
-        throw new AppError(403, 'You do not have permission to perform this action');
+    } catch (error) {
+        errorStatusCode = error.statusCode ? error.statusCode : 500;
+        throw new AppError(errorStatusCode, error.message);
     }
 };
 
@@ -143,10 +106,10 @@ exports.forgotPassword = async (req) => {
         });
 
         return {
-            status: 'success',
+            statusCode: 200,
             message: 'Token sent to email!',
         };
-    } catch (err) {
+    } catch (error) {
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
         await user.save({ validateBeforeSave: false });
@@ -175,13 +138,20 @@ exports.resetPassword = async (body, token) => {
         user.passwordResetExpires = undefined;
         await user.save();
 
-        return { status: 'success', message: 'Your password has been reset' };
-
         // 3) Update changedPasswordAt property for the user
         // 4) Log the user in, send JWT
         // createSendToken(user, req, res);
+        token = signToken(user._id);
+        user.password = undefined;
+        return {
+            statusCode: 200,
+            message: 'Your password has been reset',
+            token,
+            data: user,
+        };
     } catch {
-        throw new AppError(500, error.message);
+        errorStatusCode = error.statusCode ? error.statusCode : 500;
+        throw new AppError(errorStatusCode, error.message);
     }
 };
 
@@ -201,8 +171,19 @@ exports.updatePassword = async (userID, body) => {
         await user.save();
 
         // 4) Log user in, send JWT
+        const token = signToken(user._id);
+        user.password = undefined;
+
+        return {
+            statusCode: 200,
+            message: 'Your password has been reset',
+            token,
+            data: user,
+        };
+
         // createSendToken(user, req, res);
-    } catch (err) {
-        throw new AppError(500, error.message);
+    } catch (error) {
+        errorStatusCode = error.statusCode ? error.statusCode : 500;
+        throw new AppError(errorStatusCode, error.message);
     }
 };

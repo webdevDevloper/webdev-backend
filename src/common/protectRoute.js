@@ -3,7 +3,7 @@ const AppError = require('./appError');
 const { promisify } = require('util');
 const User = require('./../models/userModel');
 
-exports.protect = async (req, res, next) => {
+exports.protectRoute = async (req, res, next) => {
     // 1) Getting token and check of it's there
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
