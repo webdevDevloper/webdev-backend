@@ -7,6 +7,7 @@
 | CI/CD | Azure Devops |
 | Server | Amazon EC2 |
 | IPv4 | 34.225.250.142 |
+| Swagger | [webdev-studio](https://app.swaggerhub.com/apis/webdev-studio/All/1.0.0-oas3) |
 
 
 
@@ -33,6 +34,12 @@ npm run husky-prepare
 ```
 
 Whenever you make a new commit, Prettier will format your code automatically.
+
+If you want to run Prettier manually:
+
+```sh
+npm run pret
+```
 
 # Notice
 

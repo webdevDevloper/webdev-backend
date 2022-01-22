@@ -2,7 +2,6 @@
 const authController = require('./auth.controller');
 const router = require('express').Router();
 const { validate } = require('../../middleware/validate');
-// const { userPermission } = require('../../common/userPermission');
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
