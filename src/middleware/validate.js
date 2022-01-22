@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const AppError = require('../../common/errors/AppError');
+const AppError = require('../common/errors/AppError');
 const { promisify } = require('util');
-const User = require('../../models/userModel');
+const User = require('../models/userModel');
 
 exports.validate = async (req, res, next) => {
     // 1) Getting token and check of it's there

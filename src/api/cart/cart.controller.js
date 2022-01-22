@@ -12,10 +12,11 @@ module.exports = {
     },
     updateItem: async (req, res, next) => {
         try {
-            let DTO = await cartService.updateItem(req.body, res.user.id);
+            let DTO = await cartService.updateItem(req.body, req.user.id);
 
             res.status(200).json(DTO);
         } catch (error) {
+            console.log(error);
             next(error);
         }
     },

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { validate } = require('../../middleware/validate/validate');
+const { validate } = require('../../middleware/validate');
 const purchaseController = require('./purchase.controller');
 
 router.route('/').post(validate, purchaseController.addItem);

@@ -7,7 +7,7 @@ module.exports = {
         try {
             let user = await User.findById(userId);
             return {
-                cart: user[0].cart.items,
+                cart: user.cart.items,
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -32,9 +32,9 @@ module.exports = {
     },
     addItem: async (body, userId) => {
         try {
-            let { productId, newQuantity } = body;
+            let { productId, quantity } = body;
             let user = await User.findById(userId);
-            user.updateCart(productId, newQuantity);
+            user.updateCart(productId, quantity);
             return {
                 error: false,
                 msg: 'Add successfully',

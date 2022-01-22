@@ -85,7 +85,7 @@ userSchema.methods.removeFromCart = function (productId) {
 };
 
 userSchema.methods.totalInCart = function () {
-    const total = this.cart.items.reduce((total, item) => total + item.productId.populate('price'));
+    const total = this.cart.items.reduce((total, item) => total + this.populate('cart.item.productId.price'));
     return total;
 };
 
@@ -110,6 +110,10 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.duplicateEmail = async function (candidateEmail, userEmail) {
+    return candidateEmail === userEmail;
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
