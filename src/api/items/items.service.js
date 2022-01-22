@@ -10,7 +10,7 @@ module.exports = {
         let ret = 'error';
 
         await cloudinary.v2.uploader.upload(path, { public_id: name }, (error, result) => {
-            if (error) throw new AppError(500, 'Upload failed');
+            if (error) next(new AppError(500, 'Upload failed'));
             else ret = result.secure_url;
         });
 
@@ -30,7 +30,7 @@ module.exports = {
             .save()
             .then()
             .catch((err) => {
-                throw new AppError(500, "Can't upload item");
+                next(new AppError(500, "Can't upload item"));
             });
 
         delete successRes.data;
@@ -41,7 +41,7 @@ module.exports = {
         await Product.find({})
             .then((res) => (successRes.data = res))
             .catch((err) => {
-                throw new AppError(500, "Can't get items");
+                next(new AppError(500, "Can't get items"));
             });
 
         return successRes;
@@ -54,7 +54,7 @@ module.exports = {
         })
             .then((res) => (successRes.data = res))
             .catch((err) => {
-                throw new AppError(500, "Can't get items");
+                next(new AppError(500, "Can't get items"));
             });
         return successRes;
     },
@@ -67,7 +67,7 @@ module.exports = {
                 // 404
             })
             .catch((err) => {
-                throw new AppError(500, "Can't get item detail");
+                next(new AppError(500, "Can't get item detail"));
             });
         return successRes;
     },

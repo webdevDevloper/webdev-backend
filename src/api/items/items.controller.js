@@ -26,14 +26,7 @@ module.exports = {
     },
     uploadItem: async (req, res, next) => {
         try {
-            let token = req.headers.authorization.split(' ')[1] || '';
-
-            try {
-                const decoded = jwt.verify(token, process.env.JWT_KEY);
-                if (!decoded.admin) throw new Error();
-            } catch (err) {
-                throw new AppError(401, 'UNAUTHORIZED');
-            }
+            // jwt verify
 
             if (!req.file) throw new AppError(404, 'File not found');
 
