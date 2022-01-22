@@ -1,5 +1,27 @@
+const mongoose = require('mongoose');
 const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({ path: './config.env' });
+
 const app = express();
+
+const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+
+mongoose
+    .connect(DB, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    })
+    .then(() => console.log('DB connection successful!'));
+
+const api = require('./src/api');
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`App running on port ${port}...`);
+=======
 const api = require('./src/api');
 const path = require('path');
 const cloudinary = require('cloudinary');
@@ -12,23 +34,18 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
-mongoose.connect(process.env.MONGODB_CONNECT_STRING);
 
 app.use(cors());
 
-app.listen('3000', () => {
-    console.log('Running');
-});
 
+// ROUTING
 app.use(express.json());
 
 app.use('/api/v1', api);
 
+// ERROR HANDLER
 app.use((req, res) => {
-    res.status(404).json({
-        statusCode: 404,
-        message: 'API not found',
-    });
+    res.status(404).sendFile(path.join(__dirname, '/public/404.html'));
 });
 
 app.use((error, req, res, next) => {
