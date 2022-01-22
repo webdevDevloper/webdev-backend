@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const AppError = require('./appError');
 
-exports.protect = catchAsync(async (req, res, next) => {
+exports.protect = async (req, res, next) => {
     // 1) Getting token and check of it's there
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -31,4 +31,4 @@ exports.protect = catchAsync(async (req, res, next) => {
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
     next();
-});
+};
