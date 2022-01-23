@@ -14,8 +14,8 @@ module.exports = {
             const user = await User.findById(userId);
             for (let i = 0; i < product.length; i++) user.removeFromCart(product[i].productId);
             return {
-                error: false,
-                msg: 'Item added successfully',
+                statusCode: 200,
+                message: 'Item added successfully',
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -26,7 +26,9 @@ module.exports = {
             let order = await Order.find({ userId });
             // console.log(order);
             return {
-                order,
+                statusCode: 200,
+                message: 'Get item successfully',
+                data: order,
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -40,7 +42,11 @@ module.exports = {
                 const totalOfOrder = await order[i].totalOfOrder();
                 total += totalOfOrder;
             }
-            return total;
+            return {
+                statusCode: 200,
+                message: 'Get total successfully',
+                data: total,
+            };
         } catch (error) {
             throw new AppError(500, error.message);
         }
