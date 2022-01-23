@@ -31,7 +31,6 @@ orderSchema.methods.totalOfOrder = async function () {
     for (let i = 0; i < items.length; i++) {
         total += items[i].productId.price * items[i].quantity;
     }
-    console.log(total);
     return total;
 };
 module.exports = mongoose.model('Order', orderSchema);
