@@ -16,8 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/', (req, res) => {
-    !req.query.name ? itemsController.getAllItems(req, res) : itemsController.getItemsByName(req, res);
+router.get('/', (req, res, next) => {
+    !req.query.name ? itemsController.getAllItems(req, res, next) : itemsController.getItemsByName(req, res, next);
 });
 
 router.get('/:id', itemsController.getItemDetail);

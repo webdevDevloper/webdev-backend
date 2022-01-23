@@ -2,13 +2,12 @@ const mongoose = require('mongoose');
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-
-dotenv.config({ path: './config.env' });
-
 const app = express();
 const api = require('./src/api');
 const cloudinary = require('cloudinary');
 const cors = require('cors');
+
+dotenv.config({ path: './config.env' });
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,6 +29,7 @@ mongoose
     .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
     console.log(`App running on port ${port}...`);
 });
