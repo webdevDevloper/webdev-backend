@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-
-dotenv.config({ path: './config.env' });
-
 const app = express();
 const api = require('./src/api');
 const cloudinary = require('cloudinary');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+
+dotenv.config({ path: './config.env' });
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,9 +17,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
+// Body parser, reading data from body into req.body
 app.use(express.json());
+app.use(cookieParser());
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
@@ -30,6 +37,7 @@ mongoose
     .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
     console.log(`App running on port ${port}...`);
 });
