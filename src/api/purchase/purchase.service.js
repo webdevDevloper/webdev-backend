@@ -4,9 +4,6 @@ const User = require('../../models/userModel');
 
 const { AppError } = require('../../common/errors/AppError');
 
-const { promisify } = require('util');
-const jwt = require('jsonwebtoken');
-
 module.exports = {
     addItem: async ({ product }, userId) => {
         try {
@@ -38,13 +35,12 @@ module.exports = {
     getTotal: async (userId) => {
         try {
             let order = await Order.find({ userId });
-            console.log(order[0].items);
-            // let total = await order.reduce(async (total, order) => {
-            //     const totalOfOrder = await order.totalOfOrder();
-            //     return total + totalOfOrder;
-            // });
-
-            // return total;
+            let total = 0;
+            for (let i = 0; i < order.length; i++) {
+                const totalOfOrder = await order[i].totalOfOrder();
+                total += totalOfOrder;
+            }
+            return total;
         } catch (error) {
             throw new AppError(500, error.message);
         }

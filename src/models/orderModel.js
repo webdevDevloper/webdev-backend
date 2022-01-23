@@ -24,8 +24,8 @@ const orderSchema = new Schema({
     },
 });
 
-orderSchema.method.totalOfOrder = async function () {
-    const order = await this.populate('items.product', 'price');
+orderSchema.methods.totalOfOrder = async function () {
+    const order = await this.populate('items.productId', 'price');
     const items = order.items;
     let total = 0;
     for (let i = 0; i < items.length; i++) {
