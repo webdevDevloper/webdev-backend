@@ -15,14 +15,6 @@ module.exports = {
             next(error);
         }
     },
-    protect: async (req, res, next) => {
-        try {
-            await authService.protect(req);
-            next();
-        } catch (error) {
-            next(error);
-        }
-    },
     forgotPassword: async (req, res, next) => {
         try {
             let DTO = await authService.forgotPassword(req);
