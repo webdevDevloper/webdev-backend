@@ -1,7 +1,5 @@
 const User = require('../../models/userModel');
 
-const Product = require('../../models/productModel').Product;
-
 const { AppError } = require('../../common/errors/AppError');
 
 module.exports = {
@@ -9,7 +7,9 @@ module.exports = {
         try {
             let user = await User.findById(userId);
             return {
-                cart: user.cart.items,
+                statusCode: 200,
+                message: 'Get item successfully',
+                data: user.cart.items,
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -25,8 +25,8 @@ module.exports = {
                 user.removeFromCart(productId);
             }
             return {
-                error: false,
-                msg: 'Update successfully',
+                statusCode: 200,
+                message: 'Update item successfully',
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -38,8 +38,8 @@ module.exports = {
             let user = await User.findById(userId);
             user.updateCart(productId, quantity);
             return {
-                error: false,
-                msg: 'Add successfully',
+                statusCode: 200,
+                message: 'Add item successfully',
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -49,7 +49,11 @@ module.exports = {
         try {
             let user = await User.findById(userId);
             let total = await user.totalInCart();
-            return total;
+            return {
+                statusCode: 200,
+                message: 'Get total successfully',
+                data: total,
+            };
         } catch (error) {
             throw new AppError(500, error.message);
         }
