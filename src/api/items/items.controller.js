@@ -53,4 +53,15 @@ module.exports = {
             next(err);
         }
     },
+    getItemByCategory: async (req, res, next) => {
+        try {
+            const { category } = req.params;
+            // console.log(category);
+            const DTO = await itemsService.getItemsByCategory(category);
+
+            res.status(200).json(DTO);
+        } catch (error) {
+            next(error);
+        }
+    },
 };

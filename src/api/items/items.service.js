@@ -87,4 +87,16 @@ module.exports = {
             });
         if (runRet) return successRes;
     },
+    getItemsByCategory: async (category) => {
+        try {
+            const items = await Product.find({ category });
+            return {
+                statusCode: 200,
+                message: 'Get items successfully',
+                data: items,
+            };
+        } catch (error) {
+            throw new AppError(500, error.message);
+        }
+    },
 };

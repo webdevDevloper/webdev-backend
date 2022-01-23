@@ -35,6 +35,10 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    category: {
+        type: String,
+        required: true,
+    },
     userID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

@@ -24,4 +24,5 @@ router.get('/:id', itemsController.getItemDetail);
 
 router.route('/').post(validate, upload.single('thumbnail'), itemsController.uploadItem);
 
+router.get('/catalogue/:category', itemsController.getItemByCategory);
 module.exports = router;
