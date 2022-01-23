@@ -18,7 +18,7 @@ module.exports = {
 
         if (runRet) return ret;
     },
-    uploadItem: async (userID, title, description, price, amount, imageUrl, next) => {
+    uploadItem: async (userID, title, description, price, amount, category, imageUrl, next) => {
         let runRet = false;
 
         const product = new Product({
@@ -27,6 +27,7 @@ module.exports = {
             description,
             price,
             countInStocks: amount,
+            category,
             imageUrl,
         });
 

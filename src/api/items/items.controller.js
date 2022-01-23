@@ -30,23 +30,18 @@ module.exports = {
         try {
             if (!req.file) throw new AppError(404, 'File not found');
 
-            ({ title, description, price, amount } = req.body);
+            ({ title, description, price, amount, category } = req.body);
 
             // Upload thumbnail to Cloudinary
             const imageUrl = (await itemsService.uploadThumbnail(req.file.path, req.file.filename, next)) || false;
             if (!imageUrl) throw new AppError(500, 'Upload failed');
 
+            const userId = req.user.id || '';
+
             // Save data to mongodb
             const response =
-                (await itemsService.uploadItem(
-                    '61d634706a98a61edd42bf45',
-                    title,
-                    description,
-                    price,
-                    amount,
-                    imageUrl,
-                    next,
-                )) || false;
+                (await itemsService.uploadItem(userId, title, description, price, amount, category, imageUrl, next)) ||
+                false;
 
             if (response) res.send(response);
         } catch (err) {
