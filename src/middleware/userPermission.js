@@ -5,7 +5,7 @@ exports.userPermission = (...roles) => {
         if (!roles.includes(req.user.role)) {
             return res.status(401).json({
                 statusCode: 401,
-                message: '401_UNAUTHORIZED',
+                message: 'UNAUTHORIZED',
             });
         }
         next();

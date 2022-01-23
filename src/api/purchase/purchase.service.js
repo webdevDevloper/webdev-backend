@@ -36,11 +36,15 @@ module.exports = {
     getTotal: async (userId) => {
         try {
             let order = await Order.find({ userId });
-            let total = 0;
-            for (let i = 0; i < order.length; i++) {
-                const totalOfOrder = await order[i].totalOfOrder();
-                total += totalOfOrder;
-            }
+            // let total = 0;
+            // for (let i = 0; i < order.length; i++) {
+            //     const totalOfOrder = await order[i].totalOfOrder();
+            //     total += totalOfOrder;
+            // }
+            let total = await order.reduce(async (total, order) => {
+                const totalOfOrder = await order.totalOfOrder();
+                return total + totalOfOrder;
+            }, 0);
             return {
                 statusCode: 200,
                 message: 'Get total successfully',

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { validate } = require('../../middleware/validate');
+
 const cartController = require('./cart.controller');
 
 router.route('/').get(validate, cartController.getItems);

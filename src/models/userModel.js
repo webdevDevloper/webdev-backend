@@ -75,10 +75,9 @@ userSchema.methods.removeFromCart = function (productId) {
 userSchema.methods.totalInCart = async function () {
     const user = await this.populate('cart.items.productId', 'price');
     const items = user.cart.items;
-    let total = 0;
-    for (let i = 0; i < items.length; i++) {
-        total += items[i].productId.price * items[i].quantity;
-    }
+    let total = items.reduce((total, item) => {
+        return total + item.productId.price * item.quantity;
+    }, 0);
     return total;
 };
 

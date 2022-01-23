@@ -27,10 +27,9 @@ const orderSchema = new Schema({
 orderSchema.methods.totalOfOrder = async function () {
     const order = await this.populate('items.productId', 'price');
     const items = order.items;
-    let total = 0;
-    for (let i = 0; i < items.length; i++) {
-        total += items[i].productId.price * items[i].quantity;
-    }
+    let total = items.reduce((total, item) => {
+        return total + item.productId.price * item.quantity;
+    }, 0);
     return total;
 };
 module.exports = mongoose.model('Order', orderSchema);
