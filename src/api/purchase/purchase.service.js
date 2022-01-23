@@ -20,7 +20,7 @@ module.exports = {
         } catch (error) {
             throw new AppError(500, error.message);
         }
-    }, // removeFromCart
+    },
     getItems: async (userId) => {
         try {
             let order = await Order.find({ userId });
