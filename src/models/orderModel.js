@@ -29,7 +29,7 @@ orderSchema.methods.totalOfOrder = async function () {
     const items = order.items;
     let total = 0;
     for (let i = 0; i < items.length; i++) {
-        total += items[i].productId.price;
+        total += items[i].productId.price * items[i].quantity;
     }
     console.log(total);
     return total;

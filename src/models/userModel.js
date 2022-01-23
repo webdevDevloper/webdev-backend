@@ -89,7 +89,7 @@ userSchema.methods.totalInCart = async function () {
     const items = user.cart.items;
     let total = 0;
     for (let i = 0; i < items.length; i++) {
-        total += items[i].productId.price;
+        total += items[i].productId.price * items[i].quantity;
     }
     return total;
 };

@@ -24,7 +24,6 @@ module.exports = {
     getItems: async (userId) => {
         try {
             let order = await Order.find({ userId });
-            // console.log(order);
             return {
                 statusCode: 200,
                 message: 'Get item successfully',
