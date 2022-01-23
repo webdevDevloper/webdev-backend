@@ -8,6 +8,7 @@
 | Server | Amazon EC2 |
 | IPv4 | 34.225.250.142 |
 | Swagger | [webdev-studio](https://app.swaggerhub.com/apis/webdev-studio/All/1.0.0-oas3) |
+| DOC APIs | [APIs DOC](https://docs.google.com/document/d/1dn9fPTVcQdfci9z7JqQ5oIBDMrSyUy_0huUOpRRvCxY/edit?usp=sharing)|
 
 
 
