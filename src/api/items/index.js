@@ -3,19 +3,34 @@ const { validate } = require('../../middleware/validate');
 const { userPermission } = require('../../middleware/userPermission');
 const router = require('express').Router();
 const multer = require('multer');
+const { AppError } = require('../../common/errors/AppError');
+const { whiteList } = require('../../common/utils/AllowedFileTypes');
 
 // Setup multer
+
+const fileFilter = (req, file, cb) => {
+    if (!whiteList.includes(file.mimetype)) {
+        return cb(new AppError(500, 'File is not allowed'));
+    }
+    cb(null, true);
+};
+
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: (req, file, cb) => {
         cb(null, 'uploads');
     },
-    filename: function (req, file, cb) {
+    filename: (req, file, cb) => {
         const filename = Date.now() + '-' + Math.round(Math.random() * 1e9);
         cb(null, filename + '-' + file.originalname);
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage,
+    fileFilter,
+});
+
+// Routes
 
 router.get('/', (req, res, next) => {
     !req.query.name ? itemsController.getAllItems(req, res, next) : itemsController.getItemsByName(req, res, next);
