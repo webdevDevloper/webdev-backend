@@ -5,7 +5,7 @@ const { AppError } = require('../../common/errors/AppError');
 module.exports = {
     getItems: async (userId) => {
         try {
-            let user = await User.findById(userId);
+            let user = await User.findById(userId).populate('cart.items.productId');
             return {
                 statusCode: 200,
                 message: 'Get item successfully',
@@ -36,7 +36,7 @@ module.exports = {
         try {
             let { productId, quantity } = body;
             let user = await User.findById(userId);
-            user.updateCart(productId, quantity);
+            user.addToCart(productId, quantity);
             return {
                 statusCode: 200,
                 message: 'Add item successfully',

@@ -23,11 +23,11 @@ module.exports = {
     },
     getItems: async (userId) => {
         try {
-            let order = await Order.find({ userId });
+            let orders = await Order.find({ userId }).populate('items.productId');
             return {
                 statusCode: 200,
                 message: 'Get item successfully',
-                data: order,
+                data: orders,
             };
         } catch (error) {
             throw new AppError(500, error.message);
@@ -36,11 +36,6 @@ module.exports = {
     getTotal: async (userId) => {
         try {
             let order = await Order.find({ userId });
-            // let total = 0;
-            // for (let i = 0; i < order.length; i++) {
-            //     const totalOfOrder = await order[i].totalOfOrder();
-            //     total += totalOfOrder;
-            // }
             let total = await order.reduce(async (total, order) => {
                 const totalOfOrder = await order.totalOfOrder();
                 return total + totalOfOrder;
