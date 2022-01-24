@@ -16,7 +16,6 @@ module.exports = {
 
             res.status(200).json(DTO);
         } catch (error) {
-            console.log(error);
             next(error);
         }
     },

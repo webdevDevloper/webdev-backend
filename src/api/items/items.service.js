@@ -99,4 +99,16 @@ module.exports = {
             throw new AppError(500, error.message);
         }
     },
+    getCategory: async () => {
+        try {
+            const category = await Product.find().distinct('category');
+            return {
+                statusCode: 200,
+                message: 'Get items successfully',
+                data: category,
+            };
+        } catch (error) {
+            throw new AppError(500, error.message);
+        }
+    },
 };

@@ -58,4 +58,13 @@ module.exports = {
             next(error);
         }
     },
+    getCategory: async (req, res, next) => {
+        try {
+            const DTO = await itemsService.getCategory();
+
+            res.status(200).json(DTO);
+        } catch (error) {
+            next(error);
+        }
+    },
 };

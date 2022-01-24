@@ -20,9 +20,9 @@ module.exports = {
             let { productId, newQuantity } = body;
             let user = await User.findById(userId);
             if (newQuantity) {
-                user.updateCart(productId, newQuantity);
+                await user.updateCart(productId, newQuantity);
             } else {
-                user.removeFromCart(productId);
+                await user.removeFromCart(productId);
             }
             return {
                 statusCode: 200,
@@ -36,7 +36,7 @@ module.exports = {
         try {
             let { productId, quantity } = body;
             let user = await User.findById(userId);
-            user.addToCart(productId, quantity);
+            await user.addToCart(productId, quantity);
             return {
                 statusCode: 200,
                 message: 'Add item successfully',

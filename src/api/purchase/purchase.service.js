@@ -12,7 +12,7 @@ module.exports = {
                 userId: userId,
             });
             const user = await User.findById(userId);
-            for (let i = 0; i < product.length; i++) user.removeFromCart(product[i].productId);
+            for (let i = 0; i < product.length; i++) await user.removeFromCart(product[i].productId);
             return {
                 statusCode: 200,
                 message: 'Item added successfully',
