@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.methods.updateCart = function (productId, newQuantity) {
+userSchema.methods.updateCart = async function (productId, newQuantity) {
     const itemIndex = this.cart.items.findIndex((item) => {
         return item.productId.toString() === productId.toString();
     });
@@ -64,7 +64,7 @@ userSchema.methods.updateCart = function (productId, newQuantity) {
     return this.save();
 };
 
-userSchema.methods.addToCart = function (productId, quantity) {
+userSchema.methods.addToCart = async function (productId, quantity) {
     const cartProductIndex = this.cart.items.findIndex((cp) => {
         return cp.productId.toString() === productId.toString();
     });
@@ -85,7 +85,7 @@ userSchema.methods.addToCart = function (productId, quantity) {
     return this.save();
 };
 
-userSchema.methods.removeFromCart = function (productId) {
+userSchema.methods.removeFromCart = async function (productId) {
     const updatedCartItems = this.cart.items.filter((item) => {
         return item.productId.toString() !== productId.toString();
     });
