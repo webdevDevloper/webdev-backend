@@ -102,7 +102,6 @@ module.exports = {
     getCategory: async () => {
         try {
             const category = await Product.find().distinct('category');
-            console.log(category);
             return {
                 statusCode: 200,
                 message: 'Get items successfully',
