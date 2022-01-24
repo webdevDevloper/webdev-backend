@@ -1,5 +1,6 @@
 const itemsController = require('./items.controller');
 const { validate } = require('../../middleware/validate');
+const { userPermission } = require('../../middleware/userPermission');
 const router = require('express').Router();
 const multer = require('multer');
 
@@ -22,7 +23,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', itemsController.getItemDetail);
 
-router.route('/').post(validate, upload.single('thumbnail'), itemsController.uploadItem);
+router.route('/').post(validate, userPermission('admin'), upload.single('thumbnail'), itemsController.uploadItem);
 
 router.get('/catalogue/:category', itemsController.getItemByCategory);
 module.exports = router;
