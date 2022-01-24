@@ -30,7 +30,7 @@ module.exports = {
         try {
             if (!req.file) throw new AppError(404, 'File not found');
 
-            ({ title, description, price, amount, category } = req.body);
+            ({ title, description, price, category } = req.body);
 
             // Upload thumbnail to Cloudinary
             const imageUrl = (await itemsService.uploadThumbnail(req.file.path, req.file.filename, next)) || false;
@@ -40,8 +40,7 @@ module.exports = {
 
             // Save data to mongodb
             const response =
-                (await itemsService.uploadItem(userId, title, description, price, amount, category, imageUrl, next)) ||
-                false;
+                (await itemsService.uploadItem(userId, title, description, price, category, imageUrl, next)) || false;
 
             if (response) res.send(response);
         } catch (err) {
