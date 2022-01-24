@@ -21,9 +21,10 @@ router.get('/', (req, res, next) => {
     !req.query.name ? itemsController.getAllItems(req, res, next) : itemsController.getItemsByName(req, res, next);
 });
 
+router.get('/get-category', itemsController.getCategory);
+router.get('/catalogue/:category', itemsController.getItemByCategory);
 router.get('/:id', itemsController.getItemDetail);
 
 router.route('/').post(validate, userPermission('admin'), upload.single('thumbnail'), itemsController.uploadItem);
 
-router.get('/catalogue/:category', itemsController.getItemByCategory);
 module.exports = router;
